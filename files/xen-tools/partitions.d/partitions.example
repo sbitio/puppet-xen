@@ -1,0 +1,18 @@
+# Managed by puppet
+# Example partitions scheme by faita.net. Copy and modify to suit your needs.
+
+[disk]
+size=10G
+type=ext4
+mountpoint=/
+options=defaults,noatime,nodiratime,errors=remount-ro
+
+[swap]
+size=2G
+type=swap
+
+[tmp]
+size=1G
+type=ext4
+mountpoint=/tmp
+options=defaults,nodev,nosuid,noexec

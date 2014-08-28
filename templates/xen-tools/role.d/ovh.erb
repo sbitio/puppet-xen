@@ -1,0 +1,54 @@
+#!/bin/sh
+
+prefix=$1
+IP=$2
+
+#
+#  Source our common functions - this will let us install a Debian package.
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    echo "Installation problem"
+fi
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+#
+# Post up/down lines needed for networking
+#
+GATEWAY=`ip route list table main |grep default | awk '{print $3}'`
+echo "
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address $IP
+    netmask 255.255.255.255
+    broadcast $IP
+    post-up route add $GATEWAY dev eth0
+    post-up route add default gw $GATEWAY
+    post-down route del $GATEWAY dev eth0
+    post-down route del default gw $GATEWAY
+
+ # post-up  ethtool -K eth0 tx off
+
+#
+# The commented out line above will disable TCP checksumming which
+# might resolve problems for some users.  It is disabled by default
+#
+" > ${prefix}/etc/network/interfaces
+
+#
+#  Log our finish
+#
+logMessage Script $0 finished
