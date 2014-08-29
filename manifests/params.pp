@@ -23,9 +23,10 @@ class xen::params {
       $domu_purge_packages = ['grub-common', ]
 
       # Utils
-      $xenstore_package = 'xenstore-utils'
-      $xentools_package = 'xen-tools'
-      $xenwatch_package = 'xenwatch'
+      $xenstore_package    = 'xenstore-utils'
+      $xentools_package    = 'xen-tools'
+      $xentools_nameserver = undef
+      $xenwatch_package    = 'xenwatch'
     }
     default: {
       fail("Unsupported operatingsystem: ${::operatingsystem}, module ${module_name} only supports Debian at present.")

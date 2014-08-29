@@ -1,7 +1,8 @@
 class xen::xentools(
-  $package = $xen::params::xentools_package,
-  $lvm     = 'vg0',
-  $bridge  = undef,
+  $package    = $xen::params::xentools_package,
+  $lvm        = 'vg0',
+  $bridge     = undef,
+  $nameserver = $xen::params::xentools_nameserver,
 ) {
   package { $package:
     ensure => installed,

@@ -164,7 +164,9 @@ image  = sparse   # Specify sparse vs. full disk images.
 # By default, nameserver is not set, and Dom0's /etc/resolv.conf will
 # be copied to guest.
 #
-nameserver = 8.8.8.8
+<% if @nameserver -%>
+nameserver = <%= @nameserver %>
+<% end -%>
 
 #
 # Setup bridge name for host vif. Usefull if you use bridged networking
