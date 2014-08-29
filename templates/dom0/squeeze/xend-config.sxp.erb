@@ -184,16 +184,14 @@
 #(network-script network-nat)
 #(vif-script     vif-nat)
 
-<% if @networking == 'bridge' 
-  if not defined?(@bridge)
-    @bridge = 'xenbr0'
-  end
-%>
+<% if @networking -%>
+  <% if @networking == 'bridge' and @bridge -%>
 (network-script 'network-bridge bridge=<%= @bridge %>')
-<% else %>
+  <% else -%>
 (network-script network-<%= @networking %>)
-<% end %>
 (vif-script vif-<%= @networking %>)
+  <% end -%>
+<% end -%>
 
 # dom0-min-mem is the lowest permissible memory level (in MB) for dom0.
 # This is a minimum both for auto-ballooning (as enabled by

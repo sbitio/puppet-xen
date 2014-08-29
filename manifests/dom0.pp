@@ -3,6 +3,7 @@ class xen::dom0(
   $service        = $xen::params::dom0_service,
   $extra_packages = $xen::params::dom0_extra_packages,
   $networking     = undef,
+  $bridge         = undef,
   $vcpus          = 1,
   $mem            = '256',
   $suspend        = false,
@@ -11,9 +12,11 @@ class xen::dom0(
   validate_array($extra_packages)
   validate_bool($suspend)
 
-  $networking_options = [ undef, 'bridge', 'route' ]
-  if ! ($networking in $networking_options) {
-    fail("Invalid networking parameter. Valid values: ${networking_options}")
+  if $networking {
+    $networking_options = [ 'bridge', 'route' ]
+    if ! ($networking in $networking_options) {
+      fail("Invalid networking parameter. Valid values: ${networking_options}")
+    }
   }
 
   package { $package:
