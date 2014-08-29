@@ -16,11 +16,11 @@ class xen::params {
           $dom0_service = 'xen'
         }
       }
-      $dom0_extra_packages = ['bridge-utils', 'irqbalance',]
+      $dom0_extra_packages = ['irqbalance',]
 
       # domU
       $domu_kernel_package = "linux-image-$::architecture"
-      $domu_purge_packages = ['grub-common', ]
+      $domu_purge_packages = ['grub-common',]
 
       # Utils
       $xenstore_package    = 'xenstore-utils'
