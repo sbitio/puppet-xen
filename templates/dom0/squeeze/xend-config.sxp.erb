@@ -185,12 +185,12 @@
 #(vif-script     vif-nat)
 
 <% if @networking -%>
-  <% if @networking == 'bridge' and @bridge -%>
+  <%- if @networking == 'bridge' and @bridge -%>
 (network-script 'network-bridge bridge=<%= @bridge %>')
-  <% else -%>
+  <%- else -%>
 (network-script network-<%= @networking %>)
 (vif-script vif-<%= @networking %>)
-  <% end -%>
+  <%- end -%>
 <% end -%>
 
 # dom0-min-mem is the lowest permissible memory level (in MB) for dom0.
