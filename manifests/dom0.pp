@@ -6,7 +6,7 @@ class xen::dom0(
   $networking     = undef,
   $bridge         = undef,
   $vcpus          = 1,
-  $mem            = '256',
+  $mem            = '1024',
   $suspend        = false,
 ) inherits ::xen {
 
