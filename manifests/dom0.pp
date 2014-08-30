@@ -79,7 +79,7 @@ net.ipv6.conf.all.forwarding=1
   file_line { '/etc/default/grub':
     ensure => $ensure,
     path   => '/etc/default/grub',
-    line   => "GRUB_CMDLINE_XEN=\"dom0_mem=${mem}M,max:${mem}M dom0_max_vcpus=${vcpus} dom0_vcpus_pin\"",
+    line   => "GRUB_CMDLINE_XEN=\"dom0_mem=${mem}M dom0_max_vcpus=${vcpus} dom0_vcpus_pin\"",
     match  => '^GRUB_CMDLINE_XEN',
     notify => Exec['update_grub'],
   }
