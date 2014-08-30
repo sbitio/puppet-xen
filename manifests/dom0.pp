@@ -68,10 +68,11 @@ net.ipv6.conf.all.forwarding=1
     match  => '^GRUB_CMDLINE_XEN_DEFAULT',
     notify => Exec['update_grub'],
   }
-  exec { 'reorder-grub':
-   command => '/bin/mv /etc/grub.d/10_linux /etc/grub.d/20_linux; /bin/mv /etc/grub.d/20_linux_xen /etc/grub.d/10_linux_xen',
-   onlyif  => ['/usr/bin/test -f /etc/grub.d/10_linux', '/usr/bin/test -f /etc/grub.d/20_linux_xen'],
-   notify  => Exec['update_grub'],
+  # NOTE: To undo `dpkg-divert --rename --remove /etc/grub.d/20_linux_xen`
+  exec { 'grub-xen-priority':
+    command => 'dpkg-divert --divert /etc/grub.d/08_linux_xen --rename /etc/grub.d/20_linux_xen',
+    unless  => ['test -f /etc/grub.d/08_linux_xen'],
+    notify  => Exec['update_grub'],
   }
   exec {'update_grub':
     refreshonly => true,
