@@ -232,7 +232,7 @@
 
 # In SMP system, dom0 will use dom0-cpus # of CPUS
 # If dom0-cpus = 0, dom0 will take all cpus available
-(dom0-cpus 0)
+(dom0-cpus <%= @vcpus %>)
 
 # Whether to enable core-dumps when domains crash.
 #(enable-dump no)
