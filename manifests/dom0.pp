@@ -1,4 +1,5 @@
 class xen::dom0(
+  $ensure         = $xen::ensure,
   $package        = $xen::params::dom0_package,
   $service        = $xen::params::dom0_service,
   $extra_packages = $xen::params::dom0_extra_packages,
@@ -7,7 +8,7 @@ class xen::dom0(
   $vcpus          = 1,
   $mem            = '256',
   $suspend        = false,
-) inherits xen::params {
+) inherits ::xen {
 
   validate_array($extra_packages)
   validate_bool($suspend)
@@ -20,19 +21,24 @@ class xen::dom0(
   }
 
   package { $package:
-    ensure => present,
+    ensure => $ensure,
+  }
+  package { $extra_packages:
+    ensure => $ensure,
+  }
+
+  $service_ensure = $ensure ? {
+    present => running,
+    absent  => stopped,
   }
   service { $service:
-    ensure    => running,
+    ensure    => $service_ensure,
     require   => Package[$package],
     hasstatus => false,
   }
 
-  package { $extra_packages:
-    ensure => present,
-  }
-
   file { '/etc/xen/xend-config.sxp':
+    ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
     mode    => 440,
@@ -40,21 +46,29 @@ class xen::dom0(
     require => Package[$package],
     notify  => Service[$service],
   }
+  $xen_auto_ensure = $ensure ? {
+    present => directory,
+    absent  => absent,
+  }
   file { '/etc/xen/auto':
-    ensure => directory,
+    ensure => $xen_auto_ensure,
     require => Package[$package],
   }
   file { '/etc/default/xendomains':
+    ensure  => $ensure,
     content => template("xen/dom0/${::lsbdistcodename}/xendomains.erb"),
     require => Package[$package],
   }
-
-  $networking_ensure = $networking ? {
+  $networking_ensure = $ensure ? {
+    present => $networking,
+    absent  => absent,
+  }
+  $networking_ensure_real = $networking_ensure ? {
     /route/ => present,
     default => absent,
   }
   file { '/etc/sysctl.d/xen-networking.conf':
-    ensure  => $networking_ensure,
+    ensure  => $networking_ensure_real,
     content => "net.ipv4.ip_forward=1
 net.ipv4.conf.default.proxy_arp=1
 net.ipv6.conf.all.forwarding=1
@@ -63,17 +77,29 @@ net.ipv6.conf.all.forwarding=1
 
   # Grub.
   file_line { '/etc/default/grub':
+    ensure => $ensure,
     path   => '/etc/default/grub',
     line   => "GRUB_CMDLINE_XEN_DEFAULT=\"dom0_mem=${mem}M,max:${mem}M dom0_max_vcpus=${vcpus} dom0_vcpus_pin\"",
     match  => '^GRUB_CMDLINE_XEN_DEFAULT',
     notify => Exec['update_grub'],
   }
-  # NOTE: To undo `dpkg-divert --rename --remove /etc/grub.d/20_linux_xen`
-  exec { 'grub-xen-priority':
-    command => 'dpkg-divert --divert /etc/grub.d/08_linux_xen --rename /etc/grub.d/20_linux_xen',
-    unless  => ['test -f /etc/grub.d/08_linux_xen'],
-    notify  => Exec['update_grub'],
+  case $ensure {
+    present: {
+      exec { 'grub-priorities-xen':
+        command => 'dpkg-divert --divert /etc/grub.d/08_linux_xen --rename /etc/grub.d/20_linux_xen',
+        unless  => ['test -f /etc/grub.d/08_linux_xen'],
+        notify  => Exec['update_grub'],
+      }
+    }
+    absent: {
+      exec { 'grub-priorities-xen':
+        command => 'dpkg-divert --rename --remove /etc/grub.d/20_linux_xen',
+        unless  => ['test -f /etc/grub.d/20_linux_xen'],
+        notify  => Exec['update_grub'],
+      }
+    }
   }
+
   exec {'update_grub':
     refreshonly => true,
     command     => '/usr/sbin/update-grub',
