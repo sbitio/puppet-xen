@@ -17,7 +17,7 @@ fi
 logMessage Script $0 starting
 
 # Add puppet repository
-echo "deb http://apt.puppetlabs.com <%= lsbdistcodename %> main dependencies" > ${prefix}/etc/apt/sources.list.d/puppetlabs.list
+echo "deb http://apt.puppetlabs.com <%= @lsbdistcodename %> main dependencies" > ${prefix}/etc/apt/sources.list.d/puppetlabs.list
 chroot ${prefix} "wget http://apt.puppetlabs.com/pubkey.gpg -O - | apt-key add -"
 chroot ${prefix} apt-get update
 
