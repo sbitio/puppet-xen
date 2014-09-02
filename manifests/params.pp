@@ -22,10 +22,12 @@ class xen::params {
       $domu_kernel_package = "linux-image-$::architecture"
       $domu_purge_packages = ['grub-common',]
 
-      # Utils
+      # xen-tools
+      $xentools_package        = 'xen-tools'
+      $xentools_install_method = 'debootstrap'
+
+      # Other utils
       $xenstore_package    = 'xenstore-utils'
-      $xentools_package    = 'xen-tools'
-      $xentools_nameserver = undef
       $xenwatch_package    = 'xenwatch'
     }
     default: {

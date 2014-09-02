@@ -80,7 +80,7 @@ lvm = <%= @lvm %>
 # install-method = [ debootstrap | rinse | rpmstrap | copy | tar ]
 #
 #
-install-method = debootstrap
+install-method = <%= @install_method %>
 
 #
 # If you're using the "copy", or "tar" installation methods you must
@@ -223,7 +223,7 @@ bridge = <%= @bridge %>
 # Uncomment the following line if you wish to interactively setup a
 # new root password for images.
 #
-passwd = 1
+passwd = <%= @passwd %>
 #
 
 #
@@ -268,8 +268,8 @@ mirror = `xt-guess-suite-and-mirror --mirror`
 # mirror_sarge = http://archive.debian.org/debian
 # mirror_etch = http://archive.debian.org/debian
 # mirror_lenny = http://archive.debian.net/debian
-mirror_squeeze = http://cdn.debian.net/debian
-mirror_wheezy = http://cdn.debian.net/debian
+# mirror_squeeze = http://cdn.debian.net/debian
+# mirror_wheezy = http://cdn.debian.net/debian
 # mirror_sid = http://cdn.debian.net/debian
 # mirror_dapper = http://old-releases.ubuntu.com/ubuntu
 # mirror_edgy = http://old-releases.ubuntu.com/ubuntu
@@ -306,7 +306,7 @@ btrfs_options    = defaults
 # created.
 #
 # boot = 1
-
+boot = <%= @boot %>
 
 #
 #  If you're using the lenny or later version of the Xen guest kernel you will
@@ -352,5 +352,5 @@ btrfs_options    = defaults
 # copyhosts = 0 # default
 #
 # Let xen-create-image use pygrub, so that the grub from the VM is used, which means you no longer need to store kernels outside the VMs. Keeps things very flexible.
-pygrub = 1
+pygrub = <%= @pygrub %>
 

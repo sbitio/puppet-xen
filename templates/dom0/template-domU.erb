@@ -1,0 +1,30 @@
+# Managed by puppet.
+
+bootloader  = '/usr/lib/xen-default/bin/pygrub'
+
+<% if @cpus %>
+cpus        = '<%= @cpus %>'
+<% end %>
+vcpus       = '<%= @vcpus %>'
+memory      = '<%= @mem %>'
+extra       = '<%= @extra %>'
+
+root        = '/dev/<%= @root %> ro'
+
+# Add the root device first for pygrub hapiness.
+disk        = [
+      'phy:<%= @devices[@root] %>,<%= @root %>,w',
+    <% @devices.each do |name, dev| -%>
+      <% if name != @root -%>
+      'phy:<%= dev %>,<%= name %>,w',
+    <% end -%>
+  <% end -%>
+              ]
+
+name        = '<%= @name %>'
+vif         = [ 'ip=<%= @ip %>,mac=<%= @mac %><% if @bridge != "NONE" %>,bridge=<%= @bridge %><% end %>' ]
+
+on_poweroff = 'destroy'
+on_reboot   = 'restart'
+on_crash    = 'restart'
+

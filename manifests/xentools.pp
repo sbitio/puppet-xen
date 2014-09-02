@@ -1,9 +1,13 @@
 class xen::xentools(
-  $ensure     = $xen::ensure,
-  $package    = $xen::params::xentools_package,
-  $lvm        = 'vg0',
-  $bridge     = undef,
-  $nameserver = $xen::params::xentools_nameserver,
+  $ensure         = $xen::ensure,
+  $package        = $xen::params::xentools_package,
+  $install_method = $xen::params::xentools_install_method,
+  $passwd         = '0',
+  $boot           = '0',
+  $pygrub         = '0',
+  $lvm            = 'vg0',
+  $bridge         = undef,
+  $nameserver     = undef,
 ) inherits ::xen {
 
   package { $package:
