@@ -19,7 +19,7 @@ class xen::domu (
   }
   file {'/boot/grub/menu.lst':
     ensure => present,
-    content => template('xen/domU/grub/menu.lst'),
+    content => template('xen/domu/grub/menu.lst'),
   }
 
 }
