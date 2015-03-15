@@ -3,7 +3,7 @@ class xen::domu (
   $ensure         = $xen::ensure,
   $kernel_package = $xen::params::domu_kernel_package,
   $purge_packages = $xen::params::domu_purge_packages,
-) inherits xen::params {
+) inherits xen {
 
   package {$kernel_package:
     ensure => present,
