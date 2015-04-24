@@ -31,7 +31,7 @@ class xen::params {
       $xenwatch_package    = 'xenwatch'
     }
     default: {
-      fail("Unsupported operatingsystem: ${::operatingsystem}, module ${module_name} only supports Debian at present.")
+      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily Debian")
     }
   }
 }
