@@ -1,0 +1,12 @@
+default         0
+timeout         2
+
+title           <%= @lsbdistdescription %>
+root            (hd0,0)
+kernel          /vmlinuz root=/dev/xvda2 ro
+initrd          /initrd.img
+
+title           <%= @lsbdistdescription %> (Single-User)
+root            (hd0,0)
+kernel          /vmlinuz root=/dev/xvda2 ro single
+initrd          /initrd.img
