@@ -70,6 +70,20 @@ class xen::dom0(
     hasstatus => false,
   }
 
+  $xen_auto_ensure = $ensure ? {
+    present => directory,
+    absent  => absent,
+  }
+  file { '/etc/xen/auto':
+    ensure  => $xen_auto_ensure,
+    require => Package[$package],
+  }
+  file { '/etc/default/xendomains':
+    ensure  => $ensure,
+    content => template("xen/dom0/${::lsbdistcodename}/xendomains.erb"),
+    require => Package[$package],
+  }
+
   # Toolstack
   file_line { '/etc/default/xen':
     ensure => $ensure,
@@ -102,19 +116,7 @@ class xen::dom0(
     }
   }
 
-  $xen_auto_ensure = $ensure ? {
-    present => directory,
-    absent  => absent,
-  }
-  file { '/etc/xen/auto':
-    ensure  => $xen_auto_ensure,
-    require => Package[$package],
-  }
-  file { '/etc/default/xendomains':
-    ensure  => $ensure,
-    content => template("xen/dom0/${::lsbdistcodename}/xendomains.erb"),
-    require => Package[$package],
-  }
+  # Networking.
   $networking_ensure = $ensure ? {
     present => $networking,
     absent  => absent,
@@ -129,9 +131,14 @@ class xen::dom0(
 net.ipv4.conf.default.proxy_arp=1
 net.ipv6.conf.all.forwarding=1
 ",
+    notify => Exec['sysctl-xen-dom0'],
+  }
+  exec { 'sysctl-xen-dom0':
+    refreshonly => true,
+    command     => 'sysctl -p /etc/sysctl.d/xen-networking.conf',
   }
 
-  # Grub.
+  # Grub2.
   file_line { '/etc/default/grub':
     ensure => $ensure,
     path   => '/etc/default/grub',
