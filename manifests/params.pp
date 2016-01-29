@@ -34,8 +34,7 @@ class xen::params {
       $xentools_install_method = 'debootstrap'
 
       # Other utils
-      $xenstore_package    = 'xenstore-utils'
-      $xenwatch_package    = 'xenwatch'
+      #$xenstore_package    = 'xenstore-utils'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily Debian")
