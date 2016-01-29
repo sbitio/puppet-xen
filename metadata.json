@@ -1,16 +1,33 @@
 {
-  "name": "sbitmedia-xen",
+  "name": "sbitio-xen",
   "version": "0.1.0",
-  "author": "sbitmedia",
-  "summary": "Configures xen's dom0",
-  "license": "Apache 2.0",
-  "source": "http://github.com/sbitmedia/puppet-xen",
-  "project_page": "https://github.com/sbitmedia/puppet-xen",
-  "issues_url": "https://github.com/sbitmedia/puppet-xen/issues",
+  "author": "SB IT Media, S.L.",
+  "summary": "Performs installation and configuration of Xen dom0",
+  "license": "MIT",
+  "source": "http://github.com/sbitio/puppet-xen",
+  "project_page": "https://github.com/sbitio/puppet-xen",
+  "issues_url": "https://github.com/sbitio/puppet-xen/issues",
+  "tags": ["virtualization", "xen"],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [ "6", "7", "8" ]
+    }
+  ],
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
       "version_range": ">= 1.0.0"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
     }
   ]
 }
