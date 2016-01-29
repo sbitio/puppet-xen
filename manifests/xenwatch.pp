@@ -1,8 +1,13 @@
+# == Class: xen::xenwatch
+#
+# Installs xenwatch.
+#
 class xen::xenwatch(
-  $package => $xen::params::xenwatch_package,
-) {
+  $ensure  = $xen::ensure,
+  $package = $xen::params::xenwatch_package,
+) inherits xen {
   package { $package:
-    ensure => present,
+    ensure => $ensure,
   }
 }
 

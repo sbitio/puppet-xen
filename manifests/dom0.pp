@@ -1,3 +1,36 @@
+# == Class: xen::dom0
+#
+# Install Xen dom0 packages and configures the system.
+#
+# === Parameters
+#
+# [*ensure*]
+#   Wheter to install or uninstall xen's dom0.
+#
+# [*package*]
+#   Xen dom0 package name.
+#
+# [*service*]
+#   Xen dom0 service name.
+#
+# [*extra_packages*]
+#   Extra packages to install.
+#
+# [*networking*]
+#   Type of networking to configure. Valid values: bridge, route.
+#
+# [*bridge*]
+#   Name of the bridge, if networking = bridge.
+#
+# [*vcpus*]
+#   Number of vcpus to assign to the dom0 exclusively.
+#
+# [*mem*]
+#   Amount of RAM to assign to the dom0 (in MB).
+#
+# [*suspend*]
+#
+
 class xen::dom0(
   $ensure         = $xen::ensure,
   $package        = $xen::params::dom0_package,
@@ -8,7 +41,7 @@ class xen::dom0(
   $vcpus          = 1,
   $mem            = '1024',
   $suspend        = false,
-) inherits ::xen {
+) inherits xen {
 
   validate_array($extra_packages)
   validate_bool($suspend)
@@ -41,7 +74,7 @@ class xen::dom0(
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
-    mode    => 440,
+    mode    => '0440',
     content => template("xen/dom0/${::lsbdistcodename}/xend-config.sxp.erb"),
     require => Package[$package],
     notify  => Service[$service],
@@ -51,7 +84,7 @@ class xen::dom0(
     absent  => absent,
   }
   file { '/etc/xen/auto':
-    ensure => $xen_auto_ensure,
+    ensure  => $xen_auto_ensure,
     require => Package[$package],
   }
   file { '/etc/default/xendomains':
@@ -98,6 +131,7 @@ net.ipv6.conf.all.forwarding=1
         notify  => Exec['update_grub'],
       }
     }
+    default: {}
   }
 
   exec {'update_grub':

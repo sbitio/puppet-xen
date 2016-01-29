@@ -1,4 +1,20 @@
-# From http://wiki.debian.org/PyGrub
+# == Class: xen::domu
+#
+# Install Xen domU packages and configures the system.
+#
+# === Parameters
+#
+# [*ensure*]
+#   Wheter to install or uninstall xen's dom0.
+#
+# [*kernel_package*]
+#   Xen domU kernel package name.
+#
+# [*purge_package*]
+#   List of packages to purge.
+#
+# Reference http://wiki.debian.org/PyGrub
+#
 class xen::domu (
   $ensure         = $xen::ensure,
   $kernel_package = $xen::params::domu_kernel_package,
@@ -14,11 +30,11 @@ class xen::domu (
 
   # PyGrub.
   file {'/boot/grub':
-    ensure  => directory,
-    mode    => 0444,
+    ensure => directory,
+    mode   => '0444',
   }
   file {'/boot/grub/menu.lst':
-    ensure => present,
+    ensure  => present,
     content => template('xen/domu/grub/menu.lst'),
   }
 
