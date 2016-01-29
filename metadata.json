@@ -2,7 +2,7 @@
   "name": "sbitio-xen",
   "version": "0.1.0",
   "author": "SB IT Media, S.L.",
-  "summary": "Performs installation and configuration of Xen dom0",
+  "summary": "Performs installation and configuration of Xen",
   "license": "MIT",
   "source": "http://github.com/sbitio/puppet-xen",
   "project_page": "https://github.com/sbitio/puppet-xen",
