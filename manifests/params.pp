@@ -12,12 +12,19 @@ class xen::params {
           # xen hypervisor 4.0
           $dom0_package = "xen-linux-system-2.6-xen-${::architecture}"
           $dom0_service = 'xend'
+          $toolstack    = 'xm'
         }
-        'wheezy', 'jessie': {
+        'wheezy': {
           # wheezy: xen hypervisor 4.1
+          $dom0_package = "xen-linux-system-${::architecture}"
+          $dom0_service = 'xen'
+          $toolstack    = 'xm'
+        }
+        'jessie': {
           # jessie: xen hypervisor 4.4
           $dom0_package = "xen-linux-system-${::architecture}"
           $dom0_service = 'xen'
+          $toolstack    = 'xl'
         }
         default: {
           fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily Debian")

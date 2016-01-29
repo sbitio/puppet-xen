@@ -70,15 +70,38 @@ class xen::dom0(
     hasstatus => false,
   }
 
-  file { '/etc/xen/xend-config.sxp':
-    ensure  => $ensure,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0440',
-    content => template("xen/dom0/${::lsbdistcodename}/xend-config.sxp.erb"),
-    require => Package[$package],
-    notify  => Service[$service],
+  # Toolstack
+  file_line { '/etc/default/xen':
+    ensure => $ensure,
+    path   => '/etc/default/xen',
+    line   => "TOOLSTACK=${dom0_toolstack}",
+    match  => '^TOOLSTACK=',
   }
+  case $dom0_toolstack {
+    'xl': {
+      file { '/etc/xen/xl.conf':
+        ensure  => $ensure,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template("xen/dom0/${::lsbdistcodename}/xl.conf.erb"),
+        require => Package[$package],
+        notify  => Service[$service],
+      }
+    }
+    'xm': {
+      file { '/etc/xen/xend-config.sxp':
+        ensure  => $ensure,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template("xen/dom0/${::lsbdistcodename}/xend-config.sxp.erb"),
+        require => Package[$package],
+        notify  => Service[$service],
+      }
+    }
+  }
+
   $xen_auto_ensure = $ensure ? {
     present => directory,
     absent  => absent,
