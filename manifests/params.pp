@@ -10,21 +10,21 @@ class xen::params {
       case $::lsbdistcodename {
         'squeeze': {
           # xen hypervisor 4.0
-          $dom0_package = "xen-linux-system-2.6-xen-${::architecture}"
-          $dom0_service = 'xend'
-          $toolstack    = 'xm'
+          $dom0_package   = "xen-linux-system-2.6-xen-${::architecture}"
+          $dom0_service   = 'xend'
+          $dom0_toolstack = 'xm'
         }
         'wheezy': {
           # wheezy: xen hypervisor 4.1
-          $dom0_package = "xen-linux-system-${::architecture}"
-          $dom0_service = 'xen'
-          $toolstack    = 'xm'
+          $dom0_package   = "xen-linux-system-${::architecture}"
+          $dom0_service   = 'xen'
+          $dom0_toolstack = 'xm'
         }
         'jessie': {
           # jessie: xen hypervisor 4.4
-          $dom0_package = "xen-linux-system-${::architecture}"
-          $dom0_service = 'xen'
-          $toolstack    = 'xl'
+          $dom0_package   = "xen-linux-system-${::architecture}"
+          $dom0_service   = 'xen'
+          $dom0_toolstack = 'xl'
         }
         default: {
           fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily Debian")

@@ -29,8 +29,11 @@
 #   Amount of RAM to assign to the dom0 (in MB).
 #
 # [*suspend*]
+#   Wheter to enable suspend feature for running xen domains when the dom0 is shut down.
 #
-
+# [*toolstack*]
+#   The toolstack to use. Valid values: xl, xm.
+#
 class xen::dom0(
   $ensure         = $xen::ensure,
   $package        = $xen::params::dom0_package,
@@ -41,6 +44,7 @@ class xen::dom0(
   $vcpus          = 1,
   $mem            = '1024',
   $suspend        = false,
+  $toolstack      = $xen::params::dom0_toolstack,
 ) inherits xen {
 
   validate_array($extra_packages)
@@ -51,6 +55,10 @@ class xen::dom0(
     if ! ($networking in $networking_options) {
       fail("Invalid networking parameter. Valid values: ${networking_options}")
     }
+  }
+  $toolstack_options = [ 'xl', 'xm' ]
+  if ! ($toolstack in $toolstack_options) {
+    fail("Invalid toolstack parameter. Valid values: ${toolstack_options}")
   }
 
   package { $package:
@@ -88,10 +96,10 @@ class xen::dom0(
   file_line { '/etc/default/xen':
     ensure => $ensure,
     path   => '/etc/default/xen',
-    line   => "TOOLSTACK=${dom0_toolstack}",
+    line   => "TOOLSTACK=${toolstack}",
     match  => '^TOOLSTACK=',
   }
-  case $dom0_toolstack {
+  case $toolstack {
     'xl': {
       file { '/etc/xen/xl.conf':
         ensure  => $ensure,
