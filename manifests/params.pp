@@ -26,6 +26,12 @@ class xen::params {
           $dom0_service   = 'xen'
           $dom0_toolstack = 'xl'
         }
+        'stretch': {
+          # stretch: xen hypervisor 4.8
+          $dom0_package   = "xen-linux-system-${::architecture}"
+          $dom0_service   = 'xen'
+          $dom0_toolstack = 'xl'
+        }
         default: {
           fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily Debian")
         }
