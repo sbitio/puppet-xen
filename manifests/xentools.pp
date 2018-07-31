@@ -56,10 +56,6 @@ class xen::xentools(
     source => 'puppet:///modules/xen/xen-tools/xm.tmpl',
   }
   #@todo@ provide an option to pass roles to the class.
-  file { '/etc/xen-tools/role.d/puppet':
-    content => template('xen/xen-tools/role.d/puppet.erb'),
-    mode    => '0755',
-  }
   file { '/etc/xen-tools/role.d/ovh':
     content => template('xen/xen-tools/role.d/ovh.erb'),
     mode    => '0755',
