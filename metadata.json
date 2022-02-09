@@ -7,17 +7,20 @@
   "source": "http://github.com/sbitio/puppet-xen",
   "project_page": "https://github.com/sbitio/puppet-xen",
   "issues_url": "https://github.com/sbitio/puppet-xen/issues",
-  "tags": ["virtualization", "xen"],
-  "operatingsystem_support": [
-    {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [ "6", "7", "8" ]
-    }
-  ],
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
       "version_range": ">= 1.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
     }
   ],
   "requirements": [
@@ -29,6 +32,12 @@
       "name": "puppet",
       "version_requirement": "3.x"
     }
-  ]
+  ],
+  "tags": [
+    "virtualization",
+    "xen"
+  ],
+  "pdk-version": "2.3.0",
+  "template-url": "pdk-default#2.3.0",
+  "template-ref": "tags/2.3.0-0-g8aaceff"
 }
-
