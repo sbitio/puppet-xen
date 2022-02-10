@@ -122,6 +122,9 @@ class xen::dom0(
         notify  => Service[$service],
       }
     }
+    default: {
+      fail("Unsupported toolstack. Valid values are 'xm' and 'xl'")
+    }
   }
 
   # Networking.
@@ -139,7 +142,7 @@ class xen::dom0(
 net.ipv4.conf.default.proxy_arp=1
 net.ipv6.conf.all.forwarding=1
 ",
-    notify => Exec['sysctl-xen-dom0'],
+    notify  => Exec['sysctl-xen-dom0'],
   }
   exec { 'sysctl-xen-dom0':
     refreshonly => true,
@@ -183,4 +186,3 @@ net.ipv6.conf.all.forwarding=1
 #    hiera_hash("xen::domu::config", {}),
 #  )
 }
-
